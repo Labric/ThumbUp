@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1076691547183",
+    "project_id": "thumbup-ee2fe",
+    "storage_bucket": "thumbup-ee2fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076691547183:android:de07539a495f75c42282da",
+        "android_client_info": {
+          "package_name": "com.application.thumbup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076691547183-ta2h343a448u2clfn48da1iuoe2qba9d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsWiQ5vXShdW1_n-h3SkMVbpEPU8ZBGIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076691547183-ta2h343a448u2clfn48da1iuoe2qba9d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
