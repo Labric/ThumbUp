@@ -5,16 +5,17 @@ import utils from "../config/utils";
 
 export default function CustomInput(props) {
   return (
-    <View>
-      {props.icon && (
-        <Ionicons name={props.name} color="E1E1E1" size={25} />
+    <View style={{marginTop: 10}} >
+      <View style={{flexDirection: "row"}}>{props.icon && (
+        <Ionicons style={styles.icon} name={props.icon} color="#A2A2A2" size={20} />
       )}
-      <Text style={styles.label}>{props.label}</Text>
+      <Text style={styles.label}>{props.label}</Text></View>
       <TextInput
       style={styles.input}
         keyboardType={props.keyboardType}
         editable={props.editable ?? true}
         value={props.value}
+        onEndEditing={props.onEndEditing}
         autoCorrect={props.autoCorrect ?? false}
         autoCapitalize={props.autoCapitalize ?? "none"}
         autoCompleteType={props.autoCompleteType ?? "off"}
@@ -32,17 +33,28 @@ export default function CustomInput(props) {
         borderColor={props.borderColor ?? utils.primary}
         width={props.width ?? utils.width}
       />
+      {props.error && (<Text style={styles.error}>{props.error}</Text>)}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+    icon: {
+        //position: "absolute",
+        bottom: 0
+    },
   label: {
       fontStyle: "italic",
-      fontSize: 15
+      fontSize: 15,
+      marginLeft: 5
   },
   input: {
     width: utils.width,
-    backgroundColor: "E1E1E1"
+    backgroundColor: "#E1E1E1",
+    paddingHorizontal: 10
   },
+  error: {
+    color: "red",
+    fontSize: 12
+  }
 });
