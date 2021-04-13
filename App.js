@@ -1,26 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import GoogleMaps from './src/components/GoogleMaps';
-import RegisterScreen from './src/screen/authentication/RegisterScreen';
-import CompleteProfile from './src/screen/authentication/CompleteProfile';
-import WelcomeScreen from './src/screen/WelcomeScreen';
-
-
-
+import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import auth from "@react-native-firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import AuthNav from "./src/navigation/AuthNav";
+import TabNav from "./src/navigation/TabNav";
 
 export default function App() {
-  return (
-    //<RegisterScreen />
-    <CompleteProfile />
-  )
-}
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  if (initializing) return null;
+  if (!user) {
+    return (
+      <NavigationContainer>
+        <AuthNav />
+      </NavigationContainer>
+    );
+  }
+
+  return (
+    <NavigationContainer>
+      <TabNav />
+    </NavigationContainer>
+  );
+}

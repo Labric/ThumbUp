@@ -1,3 +1,4 @@
+
 import React from "react";
 import { ImageBackground, Image, StyleSheet, Text, View } from "react-native";
 import AppButton from "../components/AppButton";
@@ -6,6 +7,7 @@ import colors from "../config/utils"
 
 
 export default function WelcomeScreen({ navigation }) {
+
   return (
     // <ImageBackground
     //   style={styles.background}
@@ -25,12 +27,12 @@ export default function WelcomeScreen({ navigation }) {
           <AppButton
             text="login"
             color="green"
-            onPress={() => console.warn("login")}
+            onPress={() => navigation.navigate("login")}
           />
           <AppButton
             text="register"
             color="blue"
-            onPress={() => console.warn("register")}
+            onPress={() => navigation.navigate("register")}
           />
         </View>
       </View>

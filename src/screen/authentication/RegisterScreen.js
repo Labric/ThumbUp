@@ -7,14 +7,12 @@ import {
   Keyboard,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
-import firestore, { firebase } from "@react-native-firebase/firestore";
-
 import * as yup from "yup";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomInput from "../../components/CustomInput";
 import utils from "../../config/utils";
 
-export default function LoginScreen() {
+export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -34,27 +32,22 @@ export default function LoginScreen() {
     return schema.isValidSync(password);
   };
 
-  const register = () => {
+  const register = (navigation) => {
     Keyboard.dismiss();
+
     isValidEmail(email) &&
     isValidPassword(password) &&
     password === passwordConfirm
       ? auth()
           .createUserWithEmailAndPassword(email, password)
+
           .catch((error) => {
             if (error.code === "auth/email-already-in-use") {
               setErrorEmail(true);
-              return
+              return;
             }
           })
-          .then(() => {
-            firestore().collection("Users").add({
-              email,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            });
-          })
-          .then(alert("success"))
-
+          .then(() => navigation.navigate("completeProfil"))
       : alert("nop");
   };
 
@@ -133,7 +126,7 @@ export default function LoginScreen() {
         </TouchableHighlight>
       </View>
 
-      <Button onPress={() => register()} title="Register" />
+      <Button onPress={() => register(navigation)} title="Register" />
     </View>
   );
 }
