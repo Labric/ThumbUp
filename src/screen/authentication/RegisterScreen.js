@@ -9,7 +9,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import * as yup from "yup";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import CustomInput from "../../components/CustomInput";
+import {UserInput} from "../../components/CustomInput";
 import utils from "../../config/utils";
 
 export default function RegisterScreen({ navigation }) {
@@ -53,7 +53,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <View>
-      <CustomInput
+      <UserInput
         label="Email address"
         placeholder="thumbup@live.com"
         name="email"
@@ -69,7 +69,7 @@ export default function RegisterScreen({ navigation }) {
       />
 
       <View>
-        <CustomInput
+        <UserInput
           label="Password"
           placeholder="+ 8 characters, one letter and one number."
           name="password"
@@ -98,7 +98,7 @@ export default function RegisterScreen({ navigation }) {
       </View>
 
       <View>
-        <CustomInput
+        <UserInput
           label="Confirm password"
           placeholder="Passwords must match"
           name="passwordConfirm"

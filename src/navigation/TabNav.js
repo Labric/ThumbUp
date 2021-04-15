@@ -21,11 +21,6 @@ const AuthNavigation = () => (
       labelStyle: {
         fontSize: 15,
       },
-      tabStyle: {
-        borderStyle: "solid",
-        borderRightWidth: 1,
-        borderRightColor: colors.white
-      }
     }}
   >
     <Tab.Screen
@@ -36,7 +31,7 @@ const AuthNavigation = () => (
           <Ionicons
             name="list"
             size={24}
-            color={focused ? colors.white : colors.primary}
+            color={colors.white}
           />
         ),
         justifyContent: "center",
@@ -51,7 +46,7 @@ const AuthNavigation = () => (
           <Ionicons
             name="add-circle"
             size={24}
-            color={focused ? colors.white : colors.primary}
+            color={colors.white}
           />
         ),
         activeTintColor: colors.white,
@@ -65,7 +60,7 @@ const AuthNavigation = () => (
           <Ionicons
             name="search"
             size={24}
-            color={focused ? colors.white : colors.primary}
+            color={colors.offWhite}
           />
         ),
       }}
@@ -78,7 +73,7 @@ const AuthNavigation = () => (
           <Ionicons
             name="ios-chatbubbles"
             size={24}
-            color={focused ? colors.white : colors.primary}
+            color={colors.white}
           />
         ),
       }}
@@ -91,7 +86,7 @@ const AuthNavigation = () => (
           <Ionicons
             name="person"
             size={24}
-            color={focused ? colors.white : colors.primary}
+            color={colors.white}
           />
         ),
       }}

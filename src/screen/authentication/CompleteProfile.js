@@ -11,7 +11,7 @@ import {
 
 import { firestore, auth, firebase } from "../../config/FirebaseConfig";
 import * as yup from "yup";
-import CustomInput from "../../components/CustomInput";
+import {UserInput} from "../../components/CustomInput";
 import utils from "../../config/utils";
 
 export default function CompleteProfile({navigation}) {
@@ -71,7 +71,7 @@ export default function CompleteProfile({navigation}) {
 
   return (
     <View>
-      <CustomInput
+      <UserInput
         label="Firstname"
         name="firstname"
         onChangeText={(text) => setFirstname(text)}
@@ -83,7 +83,7 @@ export default function CompleteProfile({navigation}) {
         // }
         error={errorFirstname && "Firstname required."}
       />
-      <CustomInput
+      <UserInput
         label="Lastname"
         name="lastname"
         onChangeText={(text) => setLastname(text)}
@@ -95,7 +95,7 @@ export default function CompleteProfile({navigation}) {
         // }
         error={errorLastname && "Lastname required."}
       />
-      <CustomInput
+      <UserInput
         label="Age"
         keyboardType="numeric"
         name="age"
@@ -106,7 +106,7 @@ export default function CompleteProfile({navigation}) {
         // }
         error={errorAge && "Age required and must be above 18."}
       />
-      <CustomInput
+      <UserInput
         label="Phone number"
         keyboardType="numeric"
         name="phone"

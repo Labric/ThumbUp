@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ImageBackground, Image, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, Image, StyleSheet, Text, View, Button } from "react-native";
 import AppButton from "../components/AppButton";
 import colors from "../config/utils"
 
@@ -24,14 +24,12 @@ export default function WelcomeScreen({ navigation }) {
           </Text>
         </View>
         <View style={styles.button}>
-          <AppButton
-            text="login"
-            color="green"
+          <Button
+            title="login"
             onPress={() => navigation.navigate("login")}
           />
-          <AppButton
-            text="register"
-            color="blue"
+          <Button
+            title="register"
             onPress={() => navigation.navigate("register")}
           />
         </View>
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
   },
   top: {
     alignItems: "center",
-    backgroundColor: colors.colors.yellow
+    backgroundColor: colors.yellow
   },
   button: {
     width: "100%",
