@@ -1,10 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useSelector } from 'react-redux'
 
 export default function UpdateTravel() {
+    const travel = useSelector((state) => state.travelReducer)
     return (
         <View>
-            <Text>Update Travel</Text>
+            <Text>{travel[1].date}</Text>
         </View>
     )
 }

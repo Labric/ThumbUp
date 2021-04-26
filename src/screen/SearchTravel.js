@@ -1,10 +1,32 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native'
+//import { useSelector } from 'react-redux';
+import { SearchInput } from '../components/CustomInput'
+import TravelCard from '../components/travelCard'
+
 
 export default function SearchTravel() {
+    const [from, setFrom] = useState("")
+    const [to, setTo] = useState("")
+
+
     return (
         <View>
-            <Text>Search Travel</Text>
+            <SearchInput
+                icon="search"
+                label="From"
+                value={from}
+                onChangeText={(text) => setFrom(text)}
+             />
+            <SearchInput
+                icon="search"
+                label="To"
+                value={to}
+                onChangeText={(text) => setTo(text)}
+             />
+             <Button title="Search" onPress={() => searchButton()}/>
+
+             <TravelCard />
         </View>
     )
 }

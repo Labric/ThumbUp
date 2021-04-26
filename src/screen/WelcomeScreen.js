@@ -2,7 +2,8 @@
 import React from "react";
 import { ImageBackground, Image, StyleSheet, Text, View, Button } from "react-native";
 import AppButton from "../components/AppButton";
-import colors from "../config/utils"
+import SignOut from "../components/SignOut";
+import {colors} from "../config/utils"
 
 
 
@@ -32,6 +33,7 @@ export default function WelcomeScreen({ navigation }) {
             title="register"
             onPress={() => navigation.navigate("register")}
           />
+          <SignOut />
         </View>
       </View>
     </ImageBackground>

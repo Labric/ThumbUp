@@ -9,8 +9,8 @@ import {
 import auth from "@react-native-firebase/auth";
 import * as yup from "yup";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {UserInput} from "../../components/CustomInput";
-import utils from "../../config/utils";
+import { UserInput } from "../../components/CustomInput";
+import { colors } from "../../config/utils";
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -34,13 +34,11 @@ export default function RegisterScreen({ navigation }) {
 
   const register = (navigation) => {
     Keyboard.dismiss();
-
     isValidEmail(email) &&
     isValidPassword(password) &&
     password === passwordConfirm
       ? auth()
           .createUserWithEmailAndPassword(email, password)
-
           .catch((error) => {
             if (error.code === "auth/email-already-in-use") {
               setErrorEmail(true);
@@ -86,12 +84,12 @@ export default function RegisterScreen({ navigation }) {
         <TouchableHighlight
           activeOpacity={0.5}
           underlayColor="rgba(0, 0, 0, 0)"
-          style={{ position: "absolute", right: 5, bottom: 10 }}
+          style={{ position: "absolute", right: 5, top: 42 }}
           onPress={() => setSecureTextEntry1(!secureTextEntry1)}
         >
           <Ionicons
             name={secureTextEntry1 === false ? "eye-off" : "eye"}
-            color={utils.primary}
+            color={colors.primary}
             size={25}
           />
         </TouchableHighlight>
@@ -115,18 +113,20 @@ export default function RegisterScreen({ navigation }) {
         <TouchableHighlight
           activeOpacity={0.5}
           underlayColor="rgba(0, 0, 0, 0)"
-          style={{ position: "absolute", right: 5, bottom: 10 }}
+          style={{ position: "absolute", right: 5, top: 42 }}
           onPress={() => setSecureTextEntry2(!secureTextEntry2)}
         >
           <Ionicons
             name={secureTextEntry2 === false ? "eye-off" : "eye"}
-            color={utils.primary}
+            color={colors.primary}
             size={25}
           />
         </TouchableHighlight>
       </View>
 
       <Button onPress={() => register(navigation)} title="Register" />
+
+      <Button title="Already an account ? Log in !" onPress={() => navigation.navigate("login")} />
     </View>
   );
 }

@@ -1,6 +1,6 @@
 import { Dimensions } from "react-native";
 
-const colors = {
+export const colors = {
         primary: "#8B8D91",
         secondary: "#E4E4E4",
         green: "#1EA362",
@@ -11,11 +11,11 @@ const colors = {
         white: "#FFFFFF",
         offWhite: "#F4F4F4"
     }
-    export default colors
 
 
-// const layout = {
-//         width: Dimensions.get("window").width,
-//         height: Dimensions.get("window").height
-//     }
-//     export default layout
+export const layout = {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height
+    }
+
+

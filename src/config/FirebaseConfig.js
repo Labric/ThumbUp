@@ -2,11 +2,12 @@
 import firebase, { utils } from "@react-native-firebase/app"
 import rnAuth from "@react-native-firebase/auth"
 import rnFirestore from "@react-native-firebase/firestore"
-//import storage from "@react-native-firebase/storage"
+import storage from "@react-native-firebase/storage"
 
 const auth = rnAuth()
 const firestore = rnFirestore()
-export { firebase, auth, firestore, utils }
+const firebaseStorage = storage()
+export { firebase, auth, firestore, utils, firebaseStorage }
 
 const FirebaseConfig = {
   apiKey: "AIzaSyCgojIVo8hIPohZbzHmenu45PH6R-i2QpI",

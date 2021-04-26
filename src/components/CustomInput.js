@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TextInput, TouchableHightlight, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import utils from "../config/utils";
+import utils, { colors, layout } from "../config/utils";
 
 const UserInput = (props) => {
   return (
@@ -37,8 +37,8 @@ const UserInput = (props) => {
         textAlignVertical={props.textAlignVertical}
         textContentType={props.textContentType}
         error={props.error}
-        borderColor={props.borderColor ?? utils.primary}
-        width={props.width ?? utils.width}
+        borderColor={props.borderColor ?? colors.primary}
+        width={props.width ?? layout.width}
       />
       {props.error && <Text style={styles.error}>{props.error}</Text>}
     </View>
@@ -80,8 +80,8 @@ const SearchInput = (props) => {
             textAlignVertical={props.textAlignVertical}
             textContentType={props.textContentType}
             error={props.error}
-            borderColor={props.borderColor ?? utils.primary}
-            width={props.width ?? utils.width}
+            borderColor={props.borderColor ?? colors.primary}
+            width={props.width ?? layout.width}
           />
         </View>
       </View>
@@ -96,11 +96,15 @@ const styles = StyleSheet.create({
   label: {
     fontStyle: "italic",
     fontSize: 15,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   userInput: {
-    width: utils.width,
+    width: layout.width,
     paddingHorizontal: 10,
+    backgroundColor: "#E1E1E1",
+    alignItems: "center",
+    borderRadius: 25, 
+    paddingLeft: 10
   },
   searchInput: {
     flexDirection: "row", backgroundColor: "#E1E1E1", alignItems: "center", borderRadius: 25, paddingLeft: 10 

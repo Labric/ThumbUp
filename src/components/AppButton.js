@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import colors from "../config/utils"
+import {colors} from "../config/utils"
 
 export default function AppButton({onPress, text, color="black"}) {
     return (

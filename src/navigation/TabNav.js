@@ -6,7 +6,7 @@ import Messaging from "../screen/messaging/index";
 import Profile from "../screen/profile/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import colors from "../config/utils/";
+import {colors} from "../config/utils/";
 
 const Tab = createBottomTabNavigator();
 

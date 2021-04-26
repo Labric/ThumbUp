@@ -3,7 +3,7 @@ import { Dimensions, Platform, View } from "react-native";
 import MapView from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
-export const GoogleMaps = () => {
+export const GoogleMaps = (props) => {
   const { width, height } = Dimensions.get("window");
   const GOOGLE_MAPS_APIKEY = "AIzaSyB0m5-0-AEGq43BlbW5abIHtSjkBF6pEvY";
   //const [origin, setOrigin] = useState("")
@@ -11,7 +11,7 @@ export const GoogleMaps = () => {
   //const [waypoint, setWaypoint] = useState([])
 
   const waypoint = [];
-  const coordinates = ["Versailles", "Strasbourg"];
+  //const coordinates = [props.depart, props.dest];
   // const mapRef = React.createRef();
   // const setMapReady = () => {
   //   if (map.current) {
@@ -41,9 +41,9 @@ export const GoogleMaps = () => {
     >
       <MapViewDirections
         language="fr"
-        origin={coordinates[0]}
-        waypoints={waypoint}
-        destination={coordinates[1]}
+        origin={props.depart}
+        waypoints={props.step}
+        destination={props.dest}
         apikey={GOOGLE_MAPS_APIKEY}
         strokeWidth={3}
         strokeColor="hotpink"
@@ -55,8 +55,8 @@ export const GoogleMaps = () => {
         onReady={(result) => {
           return (
             <>
-            <View style={{height: 100, width: width, backgroundColor: "pink"}}>`Distance: ${result.distance} km`</View>
-            <View style={{height: 100, width: width, backgroundColor: "saumon"}}>`Duration: ${result.duration} min`</View>
+            <View style={{height: 100, width: "100%", backgroundColor: "pink"}}>`Distance: ${result.distance} km`</View>
+            <View style={{height: 100, width: "100%", backgroundColor: "saumon"}}>`Duration: ${result.duration} min`</View>
             </>
           )
         }}
