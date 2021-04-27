@@ -119,39 +119,19 @@ export default function CompleteProfile({ navigation }) {
           lastname: lastname.toLowerCase(),
           age: age,
           phone: phone,
+          id: currentUser.uid,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         if (image) {
           const { imageURL } = await uploadImageAsync(image);
           payload.profilePictureURL = imageURL;
         }
-        // if (currentUser.emailVerified === false) {
-        //   currentUser.sendEmailVerification();
-        // }
-        // setSendEmail(
-        //   "A verification email has been sent to you inbox, please confirm it to grant access to the complete app."
-        // );
-        await dispatchProfile(payload).then(navigation.navigate("search"));
+        await dispatchProfile(payload).then(alert("Profile correctly updated !"));
       } catch (err) {
         console.warn(err);
       }
     }
   };
-
-  // console.log(currentUser.emailVerified)
-  // console.log(currentUser);
-  // const Continue = async ( navigation ) => {
-  //   console.log("pressed")
-  //   console.log(currentUser.emailVerified)
-  //      await currentUser.uid.reload()
-  //      .then(() => {
-  //       if (currentUser.emailVerified) {
-  //         navigation.navigate("search");
-  //       } else {
-  //         return null;
-  //       }
-  //     }).catch((err) => {console.log(err)});
-  // };
 
   const dispatchProfile = (payload) => {
     if (!currentUser) return;
@@ -161,6 +141,8 @@ export default function CompleteProfile({ navigation }) {
       age: payload.age,
       phone: payload.phone,
       profilePicture: payload.profilePictureURL,
+      id: payload.id,
+      createdAt: payload.createdAt,
     });
   };
 
@@ -225,12 +207,7 @@ export default function CompleteProfile({ navigation }) {
       />
 
       <Button onPress={() => CreateUser(navigation)} title="Complete profile" />
-      {sendEmail !== "" && (
-        <>
-          <Text>{sendEmail}</Text>
-          <Button title="Continue" onPress={() => Continue(navigation)} />
-        </>
-      )}
+
       <SignOut />
 
       {modalVisible && (

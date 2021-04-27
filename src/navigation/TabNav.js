@@ -5,12 +5,16 @@ import AddTravel from "../screen/AddTravel";
 import Messaging from "../screen/messaging/index";
 import Profile from "../screen/profile/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {colors} from "../config/utils/";
+import CompleteProfile from "../screen/profile/CompleteProfile";
 
 const Tab = createBottomTabNavigator();
+const EditProfile = createStackNavigator();
 
-const AuthNavigation = () => (
+export default function TabNav()  {
+  return (
   <Tab.Navigator
     initialRouteName="search"
     tabBarOptions={{
@@ -80,7 +84,7 @@ const AuthNavigation = () => (
     />
     <Tab.Screen
       name="profile"
-      component={Profile}
+      component={ProfileNavigation}
       options={{
         tabBarIcon: ({ focused }) => (
           <Ionicons
@@ -92,6 +96,12 @@ const AuthNavigation = () => (
       }}
     />
   </Tab.Navigator>
-);
+)};
 
-export default AuthNavigation;
+const ProfileNavigation = () => (
+  <EditProfile.Navigator initialRouteName="editProfile">
+    <EditProfile.Screen name="editProfile" options={{headerShown: false}} component={Profile} />
+    <EditProfile.Screen name="completeProfile" options={{title: "Edit Profile"}} component={CompleteProfile} />
+  </EditProfile.Navigator>
+)
+

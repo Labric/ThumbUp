@@ -4,7 +4,6 @@ import { firestore, auth, firebase } from "./src/config/FirebaseConfig";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNav from "./src/navigation/AuthNav";
 import TabNav from "./src/navigation/TabNav";
-import CompleteProfile from "./src/screen/authentication/CompleteProfile";
 import LoginScreen from "./src/screen/authentication/LoginScreen";
 import WelcomeScreen from "./src/screen/WelcomeScreen";
 import { Provider } from "react-redux";
@@ -19,6 +18,7 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const { currentUser } = auth;
+
   // console.warn(user.uid)
   // console.warn(user.emailVerified)
   // Handle user state changes
