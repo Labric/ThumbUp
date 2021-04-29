@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, FlatList, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux';
 import { SearchInput } from '../components/CustomInput'
+import SignOut from '../components/SignOut';
 import TravelCard from '../components/TravelCard'
 
 
@@ -27,6 +28,7 @@ export default function SearchTravel() {
              <Button title="Search" onPress={() => searchButton()}/>
 
              <TravelCard />
+             <SignOut />
         </View>
     )
 }

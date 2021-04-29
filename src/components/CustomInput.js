@@ -20,6 +20,7 @@ const UserInput = (props) => {
       <TextInput
         style={styles.userInput}
         keyboardType={props.keyboardType}
+        defaultValue={props.defaultValue}
         editable={props.editable ?? true}
         value={props.value}
         onEndEditing={props.onEndEditing}

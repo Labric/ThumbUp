@@ -8,10 +8,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {colors} from "../config/utils/";
-import CompleteProfile from "../screen/profile/CompleteProfile";
+import EditProfile from "../screen/profile";
+import index from "../screen/profile/index";
 
 const Tab = createBottomTabNavigator();
-const EditProfile = createStackNavigator();
+const profile = createStackNavigator();
 
 export default function TabNav()  {
   return (
@@ -83,8 +84,7 @@ export default function TabNav()  {
       }}
     />
     <Tab.Screen
-      name="profile"
-      component={ProfileNavigation}
+      name="indexProfile" options={{headerShown: false}} component={index}
       options={{
         tabBarIcon: ({ focused }) => (
           <Ionicons
@@ -98,10 +98,4 @@ export default function TabNav()  {
   </Tab.Navigator>
 )};
 
-const ProfileNavigation = () => (
-  <EditProfile.Navigator initialRouteName="editProfile">
-    <EditProfile.Screen name="editProfile" options={{headerShown: false}} component={Profile} />
-    <EditProfile.Screen name="completeProfile" options={{title: "Edit Profile"}} component={CompleteProfile} />
-  </EditProfile.Navigator>
-)
 

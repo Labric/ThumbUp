@@ -11,15 +11,27 @@ import * as yup from "yup";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserInput } from "../../components/CustomInput";
 import { colors } from "../../config/utils";
+import { firestore } from "../../config/FirebaseConfig";
 
 export default function RegisterScreen({ navigation }) {
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [secureTextEntry1, setSecureTextEntry1] = useState(true);
   const [secureTextEntry2, setSecureTextEntry2] = useState(true);
   const [errorEmail, setErrorEmail] = useState(false);
+  const { currentUser } = auth;
 
+  const isValidFirstname = (firstname) => {
+    let schema = yup.string().required().min(3);
+    return schema.isValidSync(firstname);
+  };
+  const isValidLastname = (lastname) => {
+    let schema = yup.string().required();
+    return schema.isValidSync(lastname);
+  };
   const isValidEmail = (email) => {
     let schema = yup.string().email().required();
     return schema.isValidSync(email);
@@ -32,28 +44,62 @@ export default function RegisterScreen({ navigation }) {
     return schema.isValidSync(password);
   };
 
-  const register = (navigation) => {
+  const register = async () => {
+    // const payload = {
+    //   firstname: firstname.toLowerCase(),
+    //   lastname: lastname.toLowerCase(),
+    //   id: currentUser.uid,
+    //   email: currentUser.email,
+    //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    // };
     Keyboard.dismiss();
+    isValidFirstname(firstname) &&
+    isValidLastname(lastname) &&
     isValidEmail(email) &&
     isValidPassword(password) &&
     password === passwordConfirm
-      ? auth()
+      && auth()
           .createUserWithEmailAndPassword(email, password)
+          .then(await dispatchProfile(currentUser))
           .catch((error) => {
             if (error.code === "auth/email-already-in-use") {
               setErrorEmail(true);
               return;
-            }
-          })
-          .then(() => navigation.navigate("completeProfil"))
-      : alert("nop");
+            }})
+          
+          
   };
-
+  const dispatchProfile = (currentUser) => {
+    if (!currentUser) return;
+    return firestore.collection("Users").doc(currentUser.uid).set({
+      firstname: firstname.toLowerCase(),
+      lastname: lastname.toLowerCase(),
+      id: currentUser.uid,
+      email: currentUser.email,
+      createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  };
   return (
     <View>
       <UserInput
+        label="Firstname"
+        name="firstname"
+        defaultValue={firstname}
+        onChangeText={(text) => setFirstname(text)}
+        //error={errorFirstname !== "" && errorFirstname}
+        //onFocus={() => setErrorFirstname("")}
+      />
+      <UserInput
+        label="Lastname"
+        name="lastname"
+        valuealue={lastname}
+        onChangeText={(text) => setLastname(text)}
+        // error={errorLastname !== "" && errorLastname}
+        //onFocus={() => setErrorLastname("")}
+      />
+
+      <UserInput
         label="Email address"
-        placeholder="thumbup@live.com"
         name="email"
         icon="mail"
         //onBlur={() => !isValidEmail(error)}
@@ -69,7 +115,6 @@ export default function RegisterScreen({ navigation }) {
       <View>
         <UserInput
           label="Password"
-          placeholder="+ 8 characters, one letter and one number."
           name="password"
           icon="lock-closed"
           secureTextEntry={secureTextEntry1}
@@ -98,7 +143,6 @@ export default function RegisterScreen({ navigation }) {
       <View>
         <UserInput
           label="Confirm password"
-          placeholder="Passwords must match"
           name="passwordConfirm"
           icon="lock-closed"
           secureTextEntry={secureTextEntry2}
@@ -126,7 +170,10 @@ export default function RegisterScreen({ navigation }) {
 
       <Button onPress={() => register(navigation)} title="Register" />
 
-      <Button title="Already an account ? Log in !" onPress={() => navigation.navigate("login")} />
+      <Button
+        title="Already an account ? Log in !"
+        onPress={() => navigation.navigate("login")}
+      />
     </View>
   );
 }

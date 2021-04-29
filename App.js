@@ -19,8 +19,6 @@ export default function App() {
   const [user, setUser] = useState();
   const { currentUser } = auth;
 
-  // console.warn(user.uid)
-  // console.warn(user.emailVerified)
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
@@ -49,7 +47,5 @@ export default function App() {
         <TabNav />
       </NavigationContainer>
     </Provider>
-
   );
 }
-// }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,9 +6,6 @@ import {
   Keyboard,
   TouchableHighlight,
   Image,
-  Modal,
-  Platform,
-  Text,
 } from "react-native";
 import { firestore, auth, firebase } from "../../config/FirebaseConfig";
 import * as yup from "yup";
@@ -16,23 +13,25 @@ import { UserInput } from "../../components/CustomInput";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import ImagePicker from "react-native-image-picker";
-import SignOut from "../../components/SignOut";
-import AuthNavigation from "../../navigation/AuthNav";
+import { TextInput } from "react-native-gesture-handler";
+import { colors } from "../../config/utils";
 
-export default function CompleteProfile({ navigation }) {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [age, setAge] = useState();
-  const [phone, setPhone] = useState();
+export default function EditProfile({ navigation, user }) {
+  const [firstname, setFirstname] = useState(user.firstname);
+  const [lastname, setLastname] = useState(user.lastname);
+  const [age, setAge] = useState(user.age);
+  const [phone, setPhone] = useState(user.phone);
   const [errorFirstname, setErrorFirstname] = useState("");
   const [errorLastname, setErrorLastname] = useState("");
   const [errorAge, setErrorAge] = useState("");
   const [errorPhone, setErrorPhone] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [image, setImage] = useState(null);
-  const [sendEmail, setSendEmail] = useState("");
+  //const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(user.profilePicture);
+  const [carPic, setCarPic] = useState(user.carPicture);
+  const [carBrand, setCarBrand] = useState(user.carBrand)
+  const [carModel, setCarModel] = useState(user.carModel)
+  const [description, setDescription] = useState(user.description)
   const { currentUser } = auth;
-
   // FORM VALIDATION
   const isValidFirstname = (firstname) => {
     let schema = yup.string().required().min(3);
@@ -68,39 +67,57 @@ export default function CompleteProfile({ navigation }) {
       path: "images",
     },
   };
-  const openLibrary = () => {
-    setModalVisible(false);
+  const openLibraryUser = () => {
     ImagePicker.launchImageLibrary(options, (response) => {
       setImage(response.uri);
       return response.uri;
     });
   };
-
-  const openCamera = async () => {
-    setModalVisible(false);
-    ImagePicker.launchCamera(options, (response) => {
-      console.log(response);
-      setImage(response.uri);
+  const openLibraryCar = () => {
+    ImagePicker.launchImageLibrary(options, (response) => {
+      setCarPic(response.uri);
       return response.uri;
     });
   };
+
+  // const openCamera = async () => {
+  //   setModalVisible(false);
+  //   ImagePicker.launchCamera(options, (response) => {
+  //     console.log(response);
+  //     setImage(response.uri);
+  //     return response.uri;
+  //   });
+  // };
 
   const uploadImageAsync = async (uri) => {
     const ref = firebase
       .app()
       .storage("gs://thumbup-ee2fe.appspot.com/")
-      .ref("images/" + currentUser.uid + ".jpg");
+      .ref("images/" + currentUser.uid + Math.random() * 1000 + ".jpg");
     const task = ref.putFile(uri, {
       cacheControl: "no-store",
     });
     return task.then(async () => {
-      const imageURL = await ref.getDownloadURL();
-      return { imageURL };
+      const imageUserURL = await ref.getDownloadURL();
+      return { imageUserURL };
+    });
+  };
+  const uploadCarPicAsync = async (uri) => {
+    const ref = firebase
+      .app()
+      .storage("gs://thumbup-ee2fe.appspot.com/")
+      .ref("images/" + currentUser.uid + Math.random() * 1000 + ".jpg");
+    const task = ref.putFile(uri, {
+      cacheControl: "no-store",
+    });
+    return task.then(async () => {
+      const imageCarURL = await ref.getDownloadURL();
+      return { imageCarURL };
     });
   };
 
   // USER DATA HANDLER
-  const CreateUser = async (navigation) => {
+  const CreateUser = async () => {
     Keyboard.dismiss();
     if (!isValidFirstname(firstname)) {
       setErrorFirstname(
@@ -119,14 +136,21 @@ export default function CompleteProfile({ navigation }) {
           lastname: lastname.toLowerCase(),
           age: age,
           phone: phone,
-          id: currentUser.uid,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          carBrand: carBrand,
+          carModel: carModel,
+          description: description,
         };
         if (image) {
-          const { imageURL } = await uploadImageAsync(image);
-          payload.profilePictureURL = imageURL;
+          const { imageUserURL } = await uploadImageAsync(image);
+          payload.profilePictureURL = imageUserURL;
         }
-        await dispatchProfile(payload).then(alert("Profile correctly updated !"));
+        if (carPic) {
+          const { imageCarURL } = await uploadCarPicAsync(carPic);
+          payload.carPictureURL = imageCarURL;
+        }
+        await dispatchProfile(payload).then(
+          alert("Profile correctly updated !")
+        );
       } catch (err) {
         console.warn(err);
       }
@@ -135,14 +159,16 @@ export default function CompleteProfile({ navigation }) {
 
   const dispatchProfile = (payload) => {
     if (!currentUser) return;
-    return firestore.collection("Users").doc(currentUser.uid).set({
+    return firestore.collection("Users").doc(currentUser.uid).update({
       firstname: payload.firstname,
       lastname: payload.lastname,
       age: payload.age,
       phone: payload.phone,
       profilePicture: payload.profilePictureURL,
-      id: payload.id,
-      createdAt: payload.createdAt,
+      carBrand: payload.carBrand,
+      carModel: payload.carModel,
+      carPicture: payload.carPictureURL,
+      description: payload.description
     });
   };
 
@@ -158,7 +184,7 @@ export default function CompleteProfile({ navigation }) {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onPress={() => setModalVisible(true)}
+          onPress={() => openLibraryUser()}
         >
           {!image ? (
             <Ionicons name="camera-outline" size={30} color="black" />
@@ -174,16 +200,16 @@ export default function CompleteProfile({ navigation }) {
       <UserInput
         label="Firstname"
         name="firstname"
+        defaultValue={user.firstname ? user.firstname : ""}
         onChangeText={(text) => setFirstname(text)}
-        value={firstname}
         error={errorFirstname !== "" && errorFirstname}
         onFocus={() => setErrorFirstname("")}
       />
       <UserInput
         label="Lastname"
         name="lastname"
+        defaultValue={user.lastname ? user.lastname : ""}
         onChangeText={(text) => setLastname(text)}
-        value={lastname}
         error={errorLastname !== "" && errorLastname}
         onFocus={() => setErrorLastname("")}
       />
@@ -191,8 +217,8 @@ export default function CompleteProfile({ navigation }) {
         label="Age"
         keyboardType="numeric"
         name="age"
-        onChangeText={(text) => setAge(text)}
         value={age}
+        onChangeText={(text) => setAge(text)}
         error={errorAge !== "" && errorAge}
         onFocus={() => setErrorAge("")}
       />
@@ -200,17 +226,72 @@ export default function CompleteProfile({ navigation }) {
         label="Phone number"
         keyboardType="numeric"
         name="phone"
+        defaultValue={user.phone ? user.phone : ""}
         onChangeText={(text) => setPhone(text.replace(/[,.-\s]/g, ""))}
-        value={phone}
         error={errorPhone !== "" && errorPhone}
         onFocus={() => setErrorPhone("")}
       />
 
+      <View
+        style={{
+          width: "100%",
+          height: 2,
+          backgroundColor: "grey",
+          marginVertical: 15,
+        }}
+      />
+
+      <View style={{ flexDirection: "row", width: "100%" }}>
+        <TouchableHighlight
+          style={{
+            backgroundColor: "pink",
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            alignItems: "center",
+            justifyContent: "center",
+            
+          }}
+          onPress={() => openLibraryCar()}
+        >
+          {!carPic ? (
+            <Ionicons name="car" size={30} color="black" />
+          ) : (
+            <Image
+              source={{ uri: carPic }}
+              resizeMode="cover"
+              style={{ width: 50, height: 50, borderRadius: 25 }}
+            />
+          )}
+        </TouchableHighlight>
+        
+          <TextInput 
+            style={{borderBottomWidth: 1, flex: 1, marginHorizontal: 10, backgroundColor: "#E8E8E8"}}
+            placeholder="Car Brand"
+            value={carBrand}
+            onChangeText={(text) => setCarBrand(text)}
+             />
+          <TextInput 
+            style={{borderBottomWidth: 1, flex: 1, marginHorizontal: 10, backgroundColor: "#E8E8E8"}}
+            placeholder="Car Model"
+            value={carModel}
+            onChangeText={(text) => setCarModel(text)}
+             />
+
+          
+        
+      </View>
+             <TextInput 
+             placeholder="description..."
+              multiline={true}
+              numberOfLines={4}
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+              style={{backgroundColor: colors.secondary, marginTop: 10, borderRadius: 10}}
+             />
       <Button onPress={() => CreateUser(navigation)} title="Complete profile" />
 
-      <SignOut />
-
-      {modalVisible && (
+      {/* {modalVisible && (
         <Modal animationType="slide" transparent={true}>
           <View style={styles.modal}>
             <Button
@@ -221,8 +302,9 @@ export default function CompleteProfile({ navigation }) {
             />
             <Button
               title="Choose from the library"
-              onPress={() => {
-                openLibrary();
+              onPress={(car, user) => {
+                openLibraryUser(user);
+                openLibraryCar(car)
               }}
             />
             <Button
@@ -233,7 +315,7 @@ export default function CompleteProfile({ navigation }) {
             />
           </View>
         </Modal>
-      )}
+      )} */}
     </View>
   );
 }
