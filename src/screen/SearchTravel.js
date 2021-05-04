@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, StyleSheet, Text, View, TouchableHighlight } from 'react-native'
 import { useSelector } from 'react-redux';
 import { SearchInput } from '../components/CustomInput'
 import SignOut from '../components/SignOut';
@@ -26,8 +26,25 @@ export default function SearchTravel() {
                 onChangeText={(text) => setTo(text)}
              />
              <Button title="Search" onPress={() => searchButton()}/>
-
-             <TravelCard />
+             <FlatList
+             data={travel}
+             renderItem = {({item, index}) => {
+                 <TouchableHighlight
+                 style={{alignItems: "center"}} 
+                 onPress={() => console.log("coucou")}
+                 >
+                  <TravelCard 
+                   depart={item.depart}
+                   dest={item.dest}
+                   date={item.date}
+                   description={item.description}
+                  />   
+                 </TouchableHighlight>
+             }}
+             keyExtractor={item => item.id}
+              />
+<View >
+             </View>
              <SignOut />
         </View>
     )
